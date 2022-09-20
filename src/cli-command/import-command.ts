@@ -1,24 +1,29 @@
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
-import { ConsoleColorLogger } from '../logger/console-logger.js';
+import { createOffer, getErrorMessage } from '../utils/common.js';
 import { CliCommandInterface } from './cli-command.interface.js';
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
-  public execute(filename: string): void {
 
+  private onComplete(count: number) {
+    console.log(`${count} rows imported.`);
+  }
+
+  private onLine(line: string) {
+    const offer = createOffer(line);
+    console.log(offer);
+  }
+
+  public async execute(filename: string): Promise<void> {
     const fileReader = new TSVFileReader(filename.trim());
+    fileReader.on('line', this.onLine);
+    fileReader.on('end', this.onComplete);
 
     try {
-      fileReader.read();
-      const dataToLog = fileReader.toArray();
-      new ConsoleColorLogger(dataToLog).log();
-    } catch (err) {
-
-      if (!(err instanceof Error)) {
-        throw err;
-      }
-
-      console.log(`Не удалось импортировать данные из файла по причине: «${err.message}»`);
+      await fileReader.read();
+    } catch(err) {
+      console.log(`Can't read the file: ${getErrorMessage(err)}`);
     }
   }
+
 }
