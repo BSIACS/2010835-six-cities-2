@@ -1,5 +1,5 @@
 import { EstateType } from './estate-type.enum.js';
-import { Location } from './location.type.js';
+import { User } from './user.type.js';
 
 export type Offer = {
   title: string;
@@ -12,12 +12,11 @@ export type Offer = {
   isFavorite: boolean,
   rate: number,
   estateType: EstateType,
-  image: string;
   roomsQuantity: number,
   guestQuantity: number,
   price: number,
   goods: string[],
-  hostEmail: string,
+  user: User,
   commentsQuantity: number,
-  location: Location,
+  location: number[],
 }

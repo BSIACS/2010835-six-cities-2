@@ -49,13 +49,29 @@
       "Towels",
       "Fridge"
     ],
-    "hostEmail": [
-      "james_doe@fakemail.com",
-      "john_doe@fakemail.com",
-      "jane_doe@fakemail.com",
-      "jason_doe@fakemail.com",
-      "jill_doe@fakemail.com",
-      "judy_doe@fakemail.com"
+    "name": [
+      "Sergey Antonov",
+      "Olga Danilova",
+      "Denis Onoshko",
+      "Stanislav Vasiliev",
+      "Anna Skvortsova",
+      "Andrey Kuzmenko"
+    ],
+    "email": [
+      "triquommapauco-4020pmail.com",
+      "goukejabroinno-3204@mail.com",
+      "creufreillevoucei-8514@mail.com",
+      "rubaddaloisso-6133@mail.com",
+      "mebaceissiti-1357@mail.com",
+      "fessetteppoike-9144@mail.com.com"
+    ],
+    "avatar": [
+      "user.jpg",
+      "photo.jpg",
+      "awesome-avatar.jpg",
+      "roland.jpg",
+      "smit.jpg",
+      "coffee.jpg"
     ]
   }
 }

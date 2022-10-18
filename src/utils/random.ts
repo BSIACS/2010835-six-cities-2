@@ -8,7 +8,7 @@ export const getRandomItems = <T>(items: T[]):T[] => {
 };
 
 export const getRandomItem = <T>(items: T[]):T =>
-  items[generateRandomValue(0, items.length -1)];
+  items[generateRandomValue(0, items.length - 1)];
 
 export const getRandomDate = (from: Date, to: Date) => {
   const fromTime = from.getTime();

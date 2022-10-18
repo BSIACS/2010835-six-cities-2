@@ -1,4 +1,4 @@
-export enum HostType {
+export enum UserType {
   Common = 'common',
   Pro = 'pro',
 }

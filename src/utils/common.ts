@@ -1,10 +1,12 @@
 import { EstateType } from '../types/estate-type.enum.js';
-import { Location } from '../types/location.type.js';
 import { Offer } from '../types/offer.type.js';
+import crypto from 'crypto';
 
 export const createOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
-  const [title, description, date, city, previewImageSrc, offerImageSrc, isPremium, isFavorite, rate, estateType, image, roomsQuantity, guestQuantity, price, goods, hostEmail, commentsQuantity, location] = tokens;
+  const [title, description, date, city, previewImageSrc, offerImageSrc, isPremium, isFavorite, rate, estateType,
+    roomsQuantity, guestQuantity, price, goods, commentsQuantity, location, name, email, avatar, userType] = tokens;
+
   return {
     title,
     description,
@@ -15,17 +17,22 @@ export const createOffer = (row: string) => {
     isPremium: Boolean(isPremium),
     isFavorite: Boolean(isFavorite),
     rate: Number(rate),
-    estateType: EstateType[(estateType as keyof typeof EstateType)],
-    image,
+    estateType: EstateType[(estateType.charAt(0).toUpperCase() + estateType.slice(1) as keyof typeof EstateType)],
     roomsQuantity: Number(roomsQuantity),
     guestQuantity: Number(guestQuantity),
     price: Number(price),
     goods: goods.split(';'),
-    hostEmail,
+    user: {name, email, avatar, userType: userType},
     commentsQuantity: Number(commentsQuantity),
-    location: ({latitude: Number(location.split(';')[0]), longitude: Number(location.split(';')[1])} as Location),
+    location: location.split(';').map((element) => Number(element)),
   } as Offer;
 };
 
 export const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : '';
+
+
+export const createSHA256 = (line: string, salt: string): string => {
+  const shaHasher = crypto.createHmac('sha256', salt);
+  return shaHasher.update(line).digest('hex');
+};
