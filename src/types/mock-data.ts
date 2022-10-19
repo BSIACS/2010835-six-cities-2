@@ -5,5 +5,7 @@ export type MockData = {
   imageSrc: string [],
   estateType: string [],
   goods: string [],
-  hostEmail: string [],
+  name: string [],
+  email: string [],
+  avatar: string [],
 }

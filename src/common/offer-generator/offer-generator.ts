@@ -20,12 +20,10 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const isFavorite = generateRandomValue(0, 1) === 0 ? 'false' : 'true';
     const rate = String(generateRandomValue(1, 5, 1));
     const estateType = getRandomItem<string>(this.mockData.estateType);
-    const image = getRandomItem<string>(this.mockData.imageSrc);
     const roomsQuantity = String(generateRandomValue(1, 8));
     const guestQuantity = String(generateRandomValue(1, 10));
     const price = String(generateRandomValue(100, 100000));
     const goods = getRandomItems<string>(this.mockData.goods).join(';');
-    const hostEmail = getRandomItem<string>(this.mockData.hostEmail);
     const commentsQuantity = String(generateRandomValue(1, 50));
 
     const cityLocation = this.generateLocation(city);
@@ -34,10 +32,15 @@ export default class OfferGenerator implements OfferGeneratorInterface {
 
     const location = `${randomLatitude};${randomLongitude}`;
 
+    const name = getRandomItem<string>(this.mockData.name);
+    const email = getRandomItem<string>(this.mockData.email);
+    const avatar = getRandomItem<string>(this.mockData.avatar);
+    const userType = generateRandomValue(0, 1) === 0 ? 'common' : 'pro';
+
     return [
       title, description, date, city, previewImageSrc, offerImageSrc, isPremium,
-      isFavorite, rate, estateType, image, roomsQuantity, guestQuantity, price,
-      goods, hostEmail, commentsQuantity, location
+      isFavorite, rate, estateType, roomsQuantity, guestQuantity, price,
+      goods, commentsQuantity, location, name, email, avatar, userType
     ].join('\t');
   }
 
