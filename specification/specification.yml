@@ -1,0 +1,489 @@
+openapi: 3.0.0
+info:
+  title: API сервер для демо-проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+tags:
+  - name: users
+    description: Действия с пользователем.
+  - name: offers
+    description: Действия с предложениями.
+  - name: comments
+    description: Действия с комментариями.
+
+paths:
+  #РЕГИСТРАЦИЯ ПОЛЬЗОВАТЕЛЯ
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Создание нового пользователя
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  #АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ
+  /users/login:
+    parameters:
+          - name: X-Token
+            in: header
+            description: Токен авторизации пользователя
+            required: true
+            schema:
+                type: string
+                example: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+    post:
+      tags:
+        - users
+      summary: Вход в закрытую часть приложения
+      description: Вход в закрытую часть приложения.
+
+      requestBody:
+        description: Данные для входа в закрытую часть приложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        "200":
+          description: Пользователь авторизован.
+
+        "400":
+          description: Пользователь не авторизован.
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Предоставляет информацию о статусе авторизации
+
+      requestBody:
+        description: Данные для проверки статуса авторизации пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+        required: true
+
+      responses:
+        "200":
+          description: Пользователь авторизован
+
+        "401":
+          description: Пользователь не авторизован
+
+  #СОЗДАТЬ НОВОЕ ПРЕДЛОЖЕНИЕ
+  /offers/create:
+    parameters:
+          - name: X-Token
+            in: header
+            description: Токен авторизации пользователя
+            required: true
+            schema:
+                type: string
+                example: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения
+      description: Создаёт предложение по аренде
+
+      requestBody:
+          description: Информация для создания предложения
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/offerRequest'
+          required: true
+
+      responses:
+          "201":
+            description: Предложение по аренде создано Объект предложения
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/offerResponse'
+
+          "401":
+            description: Пользователь не авторизован
+
+  #ПОЛУЧИТЬ СПИСОК ПРЕДЛОЖЕНИЙ ПО АРЕНДЕ
+  /offers:
+    get:
+      tags:
+        - offers
+      summary: Получить список предложений по аренде
+      description: По умолчанию возвращает не больше 60 предложений по аренде, отсортированных по дате публикации
+
+      responses:
+        "200":
+          description: Получен список предложений по аренде
+
+  #ОПЕРАЦИИ С ОТДЕЛЬНО ВЗЯТЫМ ПРЕДЛОЖЕНИЕМ ПО АРЕНДЕ
+  /offers/{offerId}:
+    parameters:
+      - name: offerId
+        in: path
+        required: true
+        description: идентификатор предложения
+        schema:
+          type: string
+          example: 634edaad99c4e1643aa25b93
+    get:
+      tags:
+        - offers
+      summary: Получить данные о предложении по аренде
+      description: Предоставляет объект с информацией о предложении по аренде
+
+      responses:
+        "200":
+          description: Получен объект с данными о предложении по аренде
+    patch:
+      parameters:
+          - name: X-Token
+            in: header
+            description: Токен авторизации пользователя
+            required: true
+            schema:
+                type: string
+                example: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+      tags:
+        - offers
+      summary: Редактирование предложения
+      description: Редактировать существующее предложение
+
+      requestBody:
+        description: Данные для редактирования предложения по аренде
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/offerRequest'
+        required: true
+
+      responses:
+        "200":
+          description: Предложение отредактированно успешно. Отредактированный объект предложения
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/offerResponse'
+        "401":
+            description: Пользователь не авторизован
+    delete:
+      parameters:
+          - name: X-Token
+            in: header
+            description: Токен авторизации пользователя
+            required: true
+            schema:
+                type: string
+                example: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+      tags:
+        - offers
+      summary: Удалить предложение
+      description: Удаляет предложение
+
+      responses:
+        "204":
+          description: Предложение по аренде удалено
+
+        "401":
+          description: Пользователь не авторизован
+
+  #ПОЛУЧЕНИЕ СПИСКА КОММЕНАРИЕВ ДЛЯ ПРЕДЛОЖЕНИЯ
+  /comments/{offerId}:
+    parameters:
+      - name: offerId
+        in: path
+        required: true
+        description: идентификатор предложения
+        schema:
+          type: string
+          example: 634edaad99c4e1643aa25b93
+    get:
+      tags:
+        - comments
+      summary: Список комментариев для предложения
+      description: Получение списка комментариев для предложения на основе id предложения.
+
+      responses:
+        "200":
+          description: Получен список комментариев
+          content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/commentResponse'
+    post:
+      parameters:
+          - name: X-Token
+            in: header
+            description: Токен авторизации пользователя
+            required: true
+            schema:
+                type: string
+                example: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+      tags:
+        - comments
+      summary: Добавление комментария
+      description: Создаёт комментарий
+
+      requestBody:
+          description: Данные для создания комментария
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commentRequest'
+          required: true
+
+
+      responses:
+          "201":
+            description: Комментарий создан Объект комментария
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/commentResponse'
+
+          "401":
+            description: Пользователь не авторизован
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        name:
+            type: string
+            example: Karl Marx
+
+        email:
+          type: string
+          example: someuser@somemail.ru
+
+        avatar:
+          type: string
+          example: somephoto.jpg
+
+        password:
+          type: string
+          example: 123456
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: someuser@somemail.ru
+
+    loginUser:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: someuser@somemail.ru
+        password:
+          type: string
+          example: 123456
+
+    offerRequest:
+      type: object
+
+      properties:
+        title:
+            type: string
+            example: 'Wood and stone place'
+        description:
+            type: string
+            example: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.'
+        date:
+          type: string
+          example: '2022-12-01T12:00:00.000Z'
+        city:
+            type: string
+            example: 'Brussels'
+        previewImageSrc:
+            type: string
+            example: './img/someimage.png'
+        offerImageSrc:
+            type: object
+            example: [
+              './img/someimage_1.png',
+              './img/someimage_2.png',
+              './img/someimage_3.png',
+              './img/someimage_4.png',
+              './img/someimage_5.png',
+              './img/someimage_6.png'
+            ]
+        isPremium:
+            type: boolean
+            example: true
+        isFavorite:
+            type: boolean
+            example: false
+        rate:
+            type: number
+            example: 4.5
+        estateType:
+            type: string
+            example: apartment
+        roomQuantity:
+            type: number
+            example: 5
+        guestQuantity:
+            type: number
+            example: 5
+        price:
+            type: number
+            example: 10000
+        goods:
+            type: object
+            example: [
+              "Fridge",
+              "Towels",
+              "Dishwasher"
+            ]
+        userId:
+            type: number
+            example: 634edaad99c4e1643aa25b91
+        location:
+            type: object
+            example: {
+              "latitude": 50.938361,
+              "longitude": 6.959974
+            }
+
+    offerResponse:
+      type: object
+
+      properties:
+        id:
+            type: string
+            example: 634edaad99c4e1643aa25b93
+        title:
+            type: string
+            example: 'Wood and stone place'
+        description:
+            type: string
+            example: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.'
+        date:
+          type: string
+          example: '2022-12-01T12:00:00.000Z'
+        city:
+            type: string
+            example: 'Brussels'
+        previewImageSrc:
+            type: string
+            example: './img/someimage.png'
+        offerImageSrc:
+            type: object
+            example: [
+              './img/someimage_1.png',
+              './img/someimage_2.png',
+              './img/someimage_3.png',
+              './img/someimage_4.png',
+              './img/someimage_5.png',
+              './img/someimage_6.png'
+            ]
+        isPremium:
+            type: boolean
+            example: true
+        isFavorite:
+            type: boolean
+            example: false
+        rate:
+            type: number
+            example: 4.5
+        estateType:
+            type: string
+            example: apartment
+        roomQuantity:
+            type: number
+            example: 5
+        guestQuantity:
+            type: number
+            example: 5
+        price:
+            type: number
+            example: 10000
+        goods:
+            type: object
+            example: [
+              "Fridge",
+              "Towels",
+              "Dishwasher"
+            ]
+        userId:
+            type: number
+            example: 634edaad99c4e1643aa25b91
+        commentsQuantity:
+            type: number
+            example: 42
+        location:
+            type: object
+            example: {
+              "latitude": 50.938361,
+              "longitude": 6.959974
+            }
+
+    commentResponse:
+        type: object
+
+        properties:
+          rate:
+            type: number
+            example: 4.5
+
+          text:
+            type: string
+            example: We loved it so much, the house, the veiw, the location just great.. Highly reccomend :)
+
+          userId:
+            type: string
+            example: 634edaad99c4e1643aa25b91
+
+          createdAt:
+            type: string
+            example: '2022-12-01T12:00:00.000Z'
+
+    commentRequest:
+        type: object
+
+        properties:
+          rate:
+            type: number
+            example: 4.5
+
+          text:
+            type: string
+            example: We loved it so much, the house, the veiw, the location just great.. Highly reccomend :)
+
+
