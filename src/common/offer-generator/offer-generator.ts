@@ -6,6 +6,8 @@ import { generateRandomValue, getRandomDate, getRandomItem, getRandomItems } fro
 import { capitalizeFirstLetter } from '../../utils/string-operations.js';
 import { OfferGeneratorInterface } from './offer-generator.interface.js';
 
+const DEFAULT_RATE_QUANTITY = 10;
+
 export default class OfferGenerator implements OfferGeneratorInterface {
   constructor(private readonly mockData: MockData) {}
 
@@ -17,8 +19,8 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const previewImageSrc = getRandomItem<string>(this.mockData.imageSrc);
     const offerImageSrc = getRandomItem<string>(this.mockData.imageSrc);
     const isPremium = generateRandomValue(0, 1) === 0 ? 'false' : 'true';
-    const isFavorite = generateRandomValue(0, 1) === 0 ? 'false' : 'true';
-    const rate = String(generateRandomValue(1, 5, 1));
+    const rate = String(generateRandomValue(30, 50));
+    const rateQuantity = DEFAULT_RATE_QUANTITY;
     const estateType = getRandomItem<string>(this.mockData.estateType);
     const roomsQuantity = String(generateRandomValue(1, 8));
     const guestQuantity = String(generateRandomValue(1, 10));
@@ -39,7 +41,7 @@ export default class OfferGenerator implements OfferGeneratorInterface {
 
     return [
       title, description, date, city, previewImageSrc, offerImageSrc, isPremium,
-      isFavorite, rate, estateType, roomsQuantity, guestQuantity, price,
+      rate, rateQuantity, estateType, roomsQuantity, guestQuantity, price,
       goods, commentsQuantity, location, name, email, avatar, userType
     ].join('\t');
   }

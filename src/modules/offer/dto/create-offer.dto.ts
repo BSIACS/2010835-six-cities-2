@@ -8,8 +8,8 @@ export default class CreateOfferDto {
   public previewImageSrc!: string;
   public offerImageSrc!: string[];
   public isPremium!: boolean;
-  public isFavorite!: boolean;
   public rate!: number;
+  public rateQuantity!: number;
   public estateType!: EstateType;
   public roomsQuantity!: number;
   public guestQuantity!: number;

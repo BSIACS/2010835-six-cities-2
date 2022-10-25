@@ -51,8 +51,8 @@ export default class ImportCommand implements CliCommandInterface {
       previewImageSrc: offer.previewImageSrc,
       offerImageSrc: offer.offerImageSrc,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
       rate: offer.rate,
+      rateQuantity: offer.rateQuantity,
       estateType: offer.estateType,
       roomsQuantity: offer.roomsQuantity,
       guestQuantity: offer.guestQuantity,
@@ -76,6 +76,7 @@ export default class ImportCommand implements CliCommandInterface {
   public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
     this.salt = salt;
     const connectionString = getURI(login, password, host, DEFAULT_DB_PORT, dbname);
+
     await this.databaseService.connect(connectionString);
 
     const fileReader = new TSVFileReader(filename.trim());

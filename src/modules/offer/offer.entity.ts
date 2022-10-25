@@ -34,11 +34,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({required: true})
   public isPremium!: boolean;
 
-  @prop({required: true})
-  public isFavorite!: boolean;
-
-  @prop({required: true})
+  @prop({required: true})                                     //ОБЩЕЕ КОЛИЧЕСТВО БАЛЛОВ РЕЙТИНГА
   public rate!: number;
+
+  @prop({required: true})                                     //КОЛИЧЕСТВО ПОЛЬЗОВАТЕЛЕЙ ПОСТАВИВШИХ ОЦЕНКУ
+  public rateQuantity!: number;
 
   @prop({required: true})
   public estateType!: EstateType;
