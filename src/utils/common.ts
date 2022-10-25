@@ -4,7 +4,7 @@ import crypto from 'crypto';
 
 export const createOffer = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
-  const [title, description, date, city, previewImageSrc, offerImageSrc, isPremium, isFavorite, rate, estateType,
+  const [title, description, date, city, previewImageSrc, offerImageSrc, isPremium, rate, rateQuantity, estateType,
     roomsQuantity, guestQuantity, price, goods, commentsQuantity, location, name, email, avatar, userType] = tokens;
 
   return {
@@ -15,8 +15,8 @@ export const createOffer = (row: string) => {
     previewImageSrc,
     offerImageSrc: offerImageSrc.split(';'),
     isPremium: Boolean(isPremium),
-    isFavorite: Boolean(isFavorite),
     rate: Number(rate),
+    rateQuantity: Number(rateQuantity),
     estateType: EstateType[(estateType.charAt(0).toUpperCase() + estateType.slice(1) as keyof typeof EstateType)],
     roomsQuantity: Number(roomsQuantity),
     guestQuantity: Number(guestQuantity),

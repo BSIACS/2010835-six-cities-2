@@ -34,6 +34,9 @@ export class UserEntity extends defaultClasses.TimeStamps {
     return this.password;
   }
 
+  @prop({required: true, default: []})                          //МАССИВ ИЗБРАННЫХ ОБЪЯВЛЕНИЙ
+  public favoriteOffers!: string[];
+
   @prop({
     type: () => String,
     enum: UserType
