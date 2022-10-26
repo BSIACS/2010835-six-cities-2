@@ -1,1 +1,21 @@
+# Тестовые данные
+
 GET http://localhost:3101/api HTTP/1.1
+
+###
+
+# Пользователи
+## Регистрация пользователя
+
+POST http://localhost:4000/users/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "Davy Jones",
+  "email": "davyjones@flyingdutchman.net",
+  "avatar": "davyj.png",
+  "password": "shining",
+  "userType": "pro",
+}
+
+###

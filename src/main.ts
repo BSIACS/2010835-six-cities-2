@@ -18,12 +18,15 @@ import OfferService from './modules/offer/offer.service.js';
 import { CommentEntity, CommentModel } from './modules/comment/comment.entity.js';
 import CommentService from './modules/comment/comment.service.js';
 import { CommentServiceInterface } from './modules/comment/comment-service.interface.js';
+import { ControllerInterface } from './common/controller/controller.interface.js';
+import UserController from './modules/user/user.controller.js';
 
 const applicationContainer = new Container();
 applicationContainer.bind<Application>(Component.Application).to(Application).inSingletonScope();
 applicationContainer.bind<LoggerInterface>(Component.LoggerInterface).to(LoggerService).inSingletonScope();
 applicationContainer.bind<ConfigInterface>(Component.ConfigInterface).to(ConfigService).inSingletonScope();
 applicationContainer.bind<DatabaseInterface>(Component.DatabaseInterface).to(DatabaseService).inSingletonScope();
+
 applicationContainer.bind<UserServiceInterface>(Component.UserServiceInterface).to(UserService);
 applicationContainer.bind<types.ModelType<UserEntity>>(Component.UserModel).toConstantValue(UserModel);
 
@@ -32,6 +35,8 @@ applicationContainer.bind<types.ModelType<OfferEntity>>(Component.OfferModel).to
 
 applicationContainer.bind<CommentServiceInterface>(Component.CommentServiceInterface).to(CommentService).inSingletonScope();
 applicationContainer.bind<types.ModelType<CommentEntity>>(Component.CommentModel).toConstantValue(CommentModel);
+
+applicationContainer.bind<ControllerInterface>(Component.UserController).to(UserController).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
 await application.init();
