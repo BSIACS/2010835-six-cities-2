@@ -4,7 +4,7 @@ GET http://localhost:3101/api HTTP/1.1
 
 ###
 
-# Пользователи
+# ПОЛЬЗОВАТЕЛИ
 
 ## Регистрация пользователя
 POST http://localhost:4000/users/register HTTP/1.1
@@ -30,10 +30,24 @@ Content-Type: application/json
 
 
 
-# Предложения по аренде
+# ПРЕДЛОЖЕНИЯ ПО АРЕНДЕ
 
-## Получить предложения
+## Получить список предложений
 GET http://localhost:4000/offers HTTP/1.1
+###
+
+## Получить предложение по id
+GET http://localhost:4000/offers/6357820b8a1934b5a7a46765 HTTP/1.1
+###
+
+## Обновить предложение по id
+PATCH http://localhost:4000/offers/635e7219c27dd5cbab129aa2 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Amazing and Extremely Central Flat",
+  "price": 4242
+}
 ###
 
 ## Создание нового предложения
@@ -41,7 +55,7 @@ POST http://localhost:4000/offers HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "Amazing and Extremely Central Flat",
+  "title": "Amazing and Extremely Central Flat!!!",
   "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
   "date": "2022-10-28T14:52:03.000Z",
   "city": "Paris",
@@ -59,5 +73,39 @@ Content-Type: application/json
   "commentsQuantity": 42,
   "location": [52.770216, 5.595168]
 }
-
 ###
+
+## Удалить предложение по id
+DELETE  http://localhost:4000/offers/635e72c2c27dd5cbab129aa7 HTTP/1.1
+###
+
+## Получить список комментариев по id предложения
+GET http://localhost:4000/comments/6357820b8a1934b5a7a46775 HTTP/1.1
+###
+
+## Получить премиальные предложения для города
+POST http://localhost:4000/offers/premium HTTP/1.1
+Content-Type: application/json
+
+{
+  "city": "Amsterdam"
+}
+###
+
+# КОММЕНТАРИИ
+
+## Создать комментарий
+POST http://localhost:4000/comments HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "We loved it so much, the house, the veiw, the location just great.. Highly recomend :)",
+  "rate": 4,
+  "offerId": "6357820b8a1934b5a7a46775",
+  "userId": "6357820b8a1934b5a7a46767"
+}
+###
+
+
+
+

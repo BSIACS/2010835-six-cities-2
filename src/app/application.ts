@@ -20,6 +20,7 @@ export class Application{
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
     @inject(Component.OfferController) private offerController: ControllerInterface,
     @inject(Component.UserController) private userController: ControllerInterface,
+    @inject(Component.CommentController) private commentController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
   ){
     this.expressApp = express();
@@ -50,6 +51,8 @@ export class Application{
   public initRoutes() {
     this.expressApp.use('/users', this.userController.router);
     this.expressApp.use('/offers', this.offerController.router);
+    this.expressApp.use('/comments', this.commentController.router);
+
   }
 
   public initMiddleware() {

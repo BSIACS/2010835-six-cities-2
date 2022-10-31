@@ -1,6 +1,6 @@
 import { OfferEntity } from '../offer.entity';
 
-export default class OffersGetResponseDTO {
+export default class OffersResponseDTO {
   public price!: number;
   public title!: string;
   public estateType!: string;

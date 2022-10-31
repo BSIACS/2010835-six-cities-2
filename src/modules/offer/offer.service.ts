@@ -1,7 +1,6 @@
 import { DocumentType, types } from '@typegoose/typegoose';
 import { inject, injectable } from 'inversify';
 import { LoggerInterface } from '../../logger/logger.interface.js';
-import { CityName } from '../../types/city-name.enum.js';
 import { Component } from '../../types/component.types.js';
 import { SortType } from '../../types/sort-type.js';
 import CreateOfferDto from './dto/create-offer.dto.js';
@@ -62,9 +61,17 @@ export default class OfferService implements OfferServiceInterface {
       }}, {new: true}).exec();
   }
 
-  public async findPremium(city : CityName): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremium(city : string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find({isPremium: true, city: city}, {}, {limit: FIND_PREMIUM_LIMIT})
       .exec();
+  }
+
+  public async exists(offerId: string): Promise<boolean>{
+    const result = await this.offerModel
+      .exists({_id: offerId})
+      .exec();
+
+    return typeof(result) !== null;
   }
 }
