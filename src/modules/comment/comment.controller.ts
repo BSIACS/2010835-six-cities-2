@@ -11,6 +11,7 @@ import CommentService from './comment.service.js';
 import CreateCommentDto from './dto/create-comment-dto.js';
 import * as core from 'express-serve-static-core';
 import { ParamsGetComments } from '../../types/params-get-comments.js';
+import { ValidateObjectIdMiddleware } from '../../common/middleware/validate-objectid.interface.js';
 
 
 @injectable()
@@ -24,7 +25,7 @@ export default class CommentController extends Controller{
     this.logger.info('Register routes for CommentController…');
 
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getComments});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.getComments, middlewares: [new ValidateObjectIdMiddleware('offerId')]});
   }
 
   public async create({body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>, res: Response): Promise<void>{

@@ -12,6 +12,7 @@ import * as core from 'express-serve-static-core';
 import { ParamsGetOffer } from '../../types/params-get-offer.js';
 import HttpError from '../../common/errors/http-error.js';
 import UpdateOfferDto from './dto/update-offer-dto.js';
+import { ValidateObjectIdMiddleware } from '../../common/middleware/validate-objectid.interface.js';
 
 @injectable()
 export default class OfferController extends Controller {
@@ -24,9 +25,9 @@ export default class OfferController extends Controller {
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.show});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Patch, handler: this.update});
-    this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Get, handler: this.show, middlewares: [new ValidateObjectIdMiddleware('offerId')]});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Patch, handler: this.update, middlewares: [new ValidateObjectIdMiddleware('offerId')]});
+    this.addRoute({path: '/:offerId', method: HttpMethod.Delete, handler: this.delete, middlewares: [new ValidateObjectIdMiddleware('offerId')]});
     this.addRoute({path: '/premium', method: HttpMethod.Post, handler: this.getPremium});
 
   }
