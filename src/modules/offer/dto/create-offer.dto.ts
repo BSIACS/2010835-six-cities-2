@@ -31,7 +31,7 @@ export default class CreateOfferDto {
   @IsInt({message: 'rateQuantity must be an integer'})
   public rateQuantity!: number;
 
-  @IsEnum(EstateType, {message: 'type must be Buy and Sell'})
+  @IsEnum(EstateType, {message: 'type must be an EstateType'})
   public estateType!: EstateType;
 
   @IsInt({message: 'roomsQuantity must be an integer'})
